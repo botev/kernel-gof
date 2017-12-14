@@ -308,7 +308,7 @@ def get_pqsource(prob_label):
                     ),
             }
     if prob_label not in prob2tuples:
-        raise ValueError('Unknown problem label. Need to be one of %s'%str(prob2tuples.keys()) )
+        raise ValueError('Unknown problem label. Need to be one of %s'%str(list(prob2tuples.keys())) )
     return prob2tuples[prob_label]
 
 
@@ -403,7 +403,7 @@ def run_problem(prob_label):
 
 def main():
     if len(sys.argv) != 2:
-        print('Usage: %s problem_label'%sys.argv[0])
+        print(('Usage: %s problem_label'%sys.argv[0]))
         sys.exit(1)
     prob_label = sys.argv[1]
 

@@ -5,7 +5,7 @@ __author__ = 'wittawat'
 import kgof
 import os
 try:
-    import cPickle as pickle 
+    import pickle as pickle 
 except:
     import pickle
 

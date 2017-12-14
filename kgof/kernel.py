@@ -10,9 +10,8 @@ import autograd.numpy as np
 import kgof.config as config
 import kgof.util as util
 
-class Kernel(object):
+class Kernel(object, metaclass=ABCMeta):
     """Abstract class for kernels. Inputs to all methods are numpy arrays."""
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def eval(self, X, Y):
@@ -35,13 +34,12 @@ class Kernel(object):
         pass
 
 
-class KSTKernel(Kernel):
+class KSTKernel(Kernel, metaclass=ABCMeta):
     """
     Interface specifiying methods a kernel has to implement to be used with 
     the Kernelized Stein discrepancy test of Chwialkowski et al., 2016 and 
     Liu et al., 2016 (ICML 2016 papers) See goftest.KernelSteinTest.
     """
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def gradX_Y(self, X, Y, dim):
@@ -83,13 +81,12 @@ class KSTKernel(Kernel):
 
 # end KSTKernel
     
-class LinearKSTKernel(Kernel):
+class LinearKSTKernel(Kernel, metaclass=ABCMeta):
     """
     Interface specifiying methods a kernel has to implement to be used with 
     the linear-time version of Kernelized Stein discrepancy test of 
     Liu et al., 2016 (ICML 2016).
     """
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def pair_gradX_Y(self, X, Y):
@@ -131,9 +128,7 @@ class LinearKSTKernel(Kernel):
         """
         raise NotImplementedError()
 
-class DifferentiableKernel(Kernel):
-    __metaclass__ = ABCMeta
-
+class DifferentiableKernel(Kernel, metaclass=ABCMeta):
     def gradX_y(self, X, y):
         """
         Compute the gradient with respect to X (the first argument of the
@@ -293,7 +288,7 @@ class KGauss(DifferentiableKernel, KSTKernel, LinearKSTKernel):
     """
 
     def __init__(self, sigma2):
-        assert sigma2 > 0, 'sigma2 must be > 0. Was %s'%str(sigma2)
+        assert sigma2 > 0, 'sigma2 must be > 0. Was %s' % str(sigma2)
         self.sigma2 = sigma2
 
     def eval(self, X, Y):

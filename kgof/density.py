@@ -37,8 +37,7 @@ def from_grad_log(d, g):
     return UDFromCallable(d, fgrad_log=g)
 
 
-class UnnormalizedDensity(object):
-    __metaclass__ = ABCMeta
+class UnnormalizedDensity(object, metaclass=ABCMeta):
     """
     An abstract class of an unnormalized probability density function.  This is
     intended to be used to represent a model of the data for goodness-of-fit

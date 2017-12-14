@@ -23,8 +23,8 @@ class Data(object):
         self.X = X
 
         if not np.all(np.isfinite(X)):
-            print 'X:'
-            print util.fullprint(X)
+            print('X:')
+            print((util.fullprint(X)))
             raise ValueError('Not all elements in X are finite.')
 
     def __str__(self):
@@ -32,8 +32,8 @@ class Data(object):
         std_x = np.std(self.X, 0) 
         prec = 4
         desc = ''
-        desc += 'E[x] = %s \n'%(np.array_str(mean_x, precision=prec ) )
-        desc += 'Std[x] = %s \n' %(np.array_str(std_x, precision=prec))
+        desc += 'E[x] = %s \n' % (np.array_str(mean_x, precision=prec ) )
+        desc += 'Std[x] = %s \n' % (np.array_str(std_x, precision=prec))
         return desc
 
     def dim(self):
@@ -96,12 +96,11 @@ class Data(object):
 ### end Data class        
 
 
-class DataSource(object):
+class DataSource(object, metaclass=ABCMeta):
     """
     A source of data allowing resampling. Subclasses may prefix 
     class names with DS. 
     """
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def sample(self, n, seed):

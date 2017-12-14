@@ -16,11 +16,10 @@ import matplotlib.pyplot as plt
 import scipy
 import scipy.stats as stats
 
-class GofTest(object):
+class GofTest(object, metaclass=ABCMeta):
     """
     Abstract class for a goodness-of-fit test.
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self, p, alpha):
         """
@@ -53,12 +52,11 @@ class GofTest(object):
 # end of GofTest
 #------------------------------------------------------
 
-class H0Simulator(object):
+class H0Simulator(object, metaclass=ABCMeta):
     """
     An abstract class representing a simulator to draw samples from the 
     null distribution. For some tests, these are needed to conduct the test.
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self, n_simulate, seed):
         """
@@ -447,7 +445,7 @@ class FSSD(GofTest):
         X = dat.data()
         n_cand = len(list_kernel)
         objs = np.zeros(n_cand)
-        for i in xrange(n_cand):
+        for i in range(n_cand):
             ki = list_kernel[i]
             objs[i] = FSSD.power_criterion(p, dat, ki, test_locs)
             logging.info('(%d), obj: %5.4g, k: %s' %(i, objs[i], str(ki)))
@@ -611,7 +609,7 @@ class GaussFSSD(FSSD):
         # root
         x0_lb = np.hstack((np.sqrt(gwidth_lb), np.reshape(V_lb, -1)))
         x0_ub = np.hstack((np.sqrt(gwidth_ub), np.reshape(V_ub, -1)))
-        x0_bounds = zip(x0_lb, x0_ub)
+        x0_bounds = list(zip(x0_lb, x0_ub))
 
         # optimize. Time the optimization as well.
         # https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html
@@ -770,7 +768,7 @@ class IMQFSSD(FSSD):
         V_lb = np.tile(X_min - locs_bounds_frac*X_std, (J, 1))
         V_ub = np.tile(X_max + locs_bounds_frac*X_std, (J, 1))
         # (J*d) x 2. 
-        x0_bounds = zip(V_lb.reshape(-1)[:, np.newaxis], V_ub.reshape(-1)[:, np.newaxis])
+        x0_bounds = list(zip(V_lb.reshape(-1)[:, np.newaxis], V_ub.reshape(-1)[:, np.newaxis]))
 
         # optimize. Time the optimization as well.
         # https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html
@@ -880,7 +878,7 @@ class IMQFSSD(FSSD):
         """
         x0_lb = np.hstack((np.sqrt(-b_ub), c_lb, np.reshape(V_lb, -1)))
         x0_ub = np.hstack((np.sqrt(-b_lb), c_ub, np.reshape(V_ub, -1)))
-        x0_bounds = zip(x0_lb, x0_ub)
+        x0_bounds = list(zip(x0_lb, x0_ub))
 
         # optimize. Time the optimization as well.
         # https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html
